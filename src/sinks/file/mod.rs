@@ -91,6 +91,20 @@ pub struct FileSinkConfig {
     pub internal_metrics: FileInternalMetricsConfig,
 }
 
+impl FileSinkConfig {
+    pub fn new(path: &str) -> Self {
+        Self {
+            path: Template::try_from(path).unwrap(),
+            idle_timeout: default_idle_timeout(),
+            encoding: (None::<FramingConfig>, TextSerializerConfig::default()).into(),
+            compression: Compression::None,
+            acknowledgements: Default::default(),
+            timezone: None,
+            internal_metrics: Default::default(),
+        }
+    }
+}
+
 impl GenerateConfig for FileSinkConfig {
     fn generate_config() -> toml::Value {
         toml::Value::try_from(Self {

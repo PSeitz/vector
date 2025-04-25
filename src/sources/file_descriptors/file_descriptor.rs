@@ -47,6 +47,19 @@ pub struct FileDescriptorSourceConfig {
     log_namespace: Option<bool>,
 }
 
+impl FileDescriptorSourceConfig {
+    pub fn new(fd: u32) -> Self {
+        FileDescriptorSourceConfig {
+            max_length: crate::serde::default_max_length(),
+            host_key: Default::default(),
+            framing: None,
+            decoding: default_decoding(),
+            fd,
+            log_namespace: None,
+        }
+    }
+}
+
 impl FileDescriptorConfig for FileDescriptorSourceConfig {
     fn host_key(&self) -> Option<OptionalValuePath> {
         self.host_key.clone()
